@@ -137,7 +137,7 @@ resource "aws_security_group_rule" "lb_to_ecs" {
   to_port                  = 4567
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.lb.id
-  security_group_id        = aws_security_group.lb.id
+  security_group_id        = aws_security_group.ecs.id
 }
 
 resource "aws_security_group_rule" "ecs_egress" {
