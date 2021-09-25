@@ -19,6 +19,10 @@ module "vpc" {
   azs             = ["${var.region}a", "${var.region}b", "${var.region}c"]
   public_subnets  = ["10.0.0.0/26", "10.0.0.64/26", "10.0.0.128/26"]
   private_subnets = ["10.0.16.0/26", "10.0.16.64/26", "10.0.16.128/26"]
+
+  enable_nat_gateway   = true
+  enable_dns_hostnames = true
+  enable_dns_support   = true
 }
 
 # Create the ECS cluster
