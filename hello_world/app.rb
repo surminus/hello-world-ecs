@@ -10,6 +10,6 @@ get '/' do
   HelloWorld.greeting
 end
 
-get 'ping' do
+get '/ping' do
   'pong'
 end
