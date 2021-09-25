@@ -165,5 +165,54 @@ resource "aws_ecs_service" "default" {
   }
 }
 
+resource "aws_iam_user" "deploy" {
+  name = "${var.name}-deploy"
+}
+
+resource "aws_iam_access_key" "deploy" {
+  user = aws_iam_user.deploy.name
+}
+
+data "aws_iam_policy_document" "deploy" {
+  statement {
+    actions   = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:DescribeImages",
+      "ecr:DescribeRepositories",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetRepositoryPolicy",
+      "ecr:InitiateLayerUpload",
+      "ecr:ListImages",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
+    ]
+
+    resources = [aws_ecr_repository.default.arn]
+  }
+
+  statement {
+    actions   = ["ecs:UpdateService"]
+    resources = [aws_ecs_service.default.id]
+  }
+
+  statement {
+    actions   = ["ecs:DescribeServices"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_user_policy" "deploy" {
+  name   = "${var.name}-deploy"
+  user   = aws_iam_user.deploy.name
+  policy = data.aws_iam_policy_document.deploy.json
+}
+
 output "endpoint" { value = aws_lb.default.dns_name }
 output "vpc_id" { value = module.vpc.vpc_id }
