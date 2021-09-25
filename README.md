@@ -26,7 +26,5 @@ terraform apply
 
 ## Deploy the application
 
-Use the GitHub Action.
-
-Use AWS access keys that have permissions to push to ECR, and update the
-service in ECS.
+Push to the `main` branch, and the GitHub Action will automatically build the
+new container, and update the ECS service.
