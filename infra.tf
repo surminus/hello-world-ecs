@@ -160,8 +160,9 @@ resource "aws_ecs_service" "default" {
   }
 
   network_configuration {
-    subnets         = module.vpc.private_subnets
-    security_groups = [aws_security_group.ecs.id]
+    subnets          = module.vpc.private_subnets
+    security_groups  = [aws_security_group.ecs.id]
+    assign_public_ip = true
   }
 }
 
