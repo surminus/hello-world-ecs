@@ -23,5 +23,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Update ECS service
         run: |
-          aws ecs update-service --service hello-world --cluster hello-world --force-new-deployment
-          aws ecs wait services-stable --services hello-world --cluster hello-world
+          aws ecs update-service --service hello-world --cluster hello-world --force-new-deployment >/dev/null
+          echo "Service updated! Waiting for it to become stable..."
+          aws ecs wait services-stable --services hello-world --cluster hello-world >/dev/null
+          echo "Done!"
